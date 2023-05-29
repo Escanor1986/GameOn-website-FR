@@ -1,5 +1,8 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable space-before-function-paren */
+/* eslint-disable semi */
 function editNav() {
-  let x = document.getElementById("myTopnav");
+  const x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
     x.className += " responsive";
   } else {
@@ -10,102 +13,210 @@ function editNav() {
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
-const formData = document.querySelectorAll(".formData");
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
 // launch modal form
 function launchModal() {
+  console.log("modal opened !");
   modalbg.style.display = "block";
 }
 
 // Close DOM element
 const modalClose = document.querySelector(".close");
 // close modal event
-modalClose.addEventListener("click", (event) => {
-  event.preventDefault();
-  // close modal form
-  console.log("modal closed !");
-  modalbg.style.display = "none";
-});
+const closingModal = () => {
+  modalClose.addEventListener("click", (event) => {
+    event.preventDefault();
+    // close modal form
+    console.log("modal closed !");
+    modalbg.style.display = "none";
+  });
+};
+
+closingModal();
 
 // Gestion du formulaire
-const emailRegExp = new RegExp(
-  "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"
-);
-const charRegExp = new RegExp("^[a-zA-Z ,.'-]+$");
+const formValidity = {
+  firstName: false,
+  lastName: false,
+  email: false,
+  date: false,
+  numberOfTournament: false,
+  tournamentLocation: false,
+  userCondition: false,
+};
 
-function validate() {
-  // Récupération des éléments du formulaire
-  const firstName = document.getElementById("first");
-  const lastName = document.getElementById("last");
-  const email = document.getElementById("email");
-  const birthdate = document.getElementById("birthdate");
-  const quantity = document.getElementById("quantity");
-  const location = document.getElementsByName("location");
-  const checkbox1 = document.getElementById("checkbox1");
+const charRegExp = /^[a-zA-Z ,.'-]+$/;
+const emailRegExp = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
+const dateRegExp = /^(\d{4})-(\d{2})-(\d{2})$/;
 
-  // Vérification de complétion des champs obligatoires
-  if (firstName.value.trim() === "") {
-    alert("Veuillez entrer votre prénom.");
-    return false;
-  } else if (!charRegExp.test(firstName.value.trim())) {
-    alert(
-      "Le prénom doit contenir au moins 2 caractères et ne peut contenir que des lettres, des espaces, des virgules, des apostrophes, des tirets ou des points."
-    );
-    return false;
+const form = document.querySelector("form[name='reserve']");
+const validationForm = document.querySelector(".btn-submit");
+const validationIcons = document.querySelectorAll(".icone-verif");
+const validationTexts = document.querySelectorAll(".error-msg");
+
+// Ici, on cible l'élément input qui se trouve dans
+// le premier élément div ayant la classe formData
+const firstNameInput = form.querySelector("div.formData:nth-child(1) input");
+const lastNameInput = form.querySelector("div.formData:nth-child(2) input");
+const emailInput = form.querySelector("div.formData:nth-child(3) input");
+const dateInput = form.querySelector("div.formData:nth-child(4) input");
+const quantityInput = form.querySelector("div.formData:nth-child(5) input");
+
+const formInputs = [
+  {
+    selector: "div.formData:nth-child(1) input",
+    validation: firstNameValidation,
+  },
+  {
+    selector: "div.formData:nth-child(2) input",
+    validation: lastNameValidation,
+  },
+  { selector: "div.formData:nth-child(3) input", validation: emailValidation },
+  { selector: "div.formData:nth-child(4) input", validation: dateValidation },
+  {
+    selector: "div.formData:nth-child(5) input",
+    validation: quantityValidation,
+  },
+];
+
+// showValidation permet d'effectuer un "destructuring" pour passer en paramètre
+// la fonction afin d'éviter de répéter de plus grosse partie de code
+function showValidation({ index, validation }) {
+  if (validation) {
+    validationIcons[index].style.display = "inline";
+    validationIcons[index].src = "icons/check.svg";
+    validationIcons[index].style.background = "#279e7a";
+    validationTexts[index].style.display = "none";
+  } else {
+    validationIcons[index].style.display = "inline";
+    validationIcons[index].src = "icons/reject.svg";
+    validationIcons[index].style.background = "red";
+    validationTexts[index].style.display = "block";
   }
+}
 
-  if (lastName.value.trim() === "") {
-    alert("Veuillez entrer votre nom.");
-    return false;
-  } else if (!charRegExp.test(lastName.value.trim())) {
-    alert(
-      "Le nom doit contenir au moins 2 caractères et ne peut contenir que des lettres, des espaces, des virgules, des apostrophes, des tirets ou des points."
-    );
-    return false;
+formInputs.forEach(({ selector, validation }) => {
+  const input = form.querySelector(selector);
+  input.addEventListener("blur", validation);
+  input.addEventListener("input", validation);
+});
+
+function firstNameValidation() {
+  if (
+    firstNameInput.value.length >= 2 &&
+    charRegExp.test(firstNameInput.value)
+  ) {
+    showValidation({ index: 0, validation: true });
+    formValidity.firstName = true;
+  } else {
+    showValidation({ index: 0, validation: false });
+    formValidity.firstName = false;
   }
+}
 
-  if (email.value.trim() === "") {
-    alert("Veuillez entrer votre adresse e-mail.");
-    return false;
-  } else if (!emailRegExp.test(email.value.trim())) {
-    alert("Veuillez entrer une adresse e-mail valide.");
-    return false;
+function lastNameValidation() {
+  if (lastNameInput.value.length >= 2 && charRegExp.test(lastNameInput.value)) {
+    showValidation({ index: 1, validation: true });
+    formValidity.lastName = true;
+  } else {
+    showValidation({ index: 1, validation: false });
+    formValidity.lastName = false;
   }
+}
 
-  if (birthdate.value.trim() === "") {
-    alert("Veuillez entrer votre date de naissance.");
-    return false;
+function emailValidation() {
+  if (emailRegExp.test(emailInput.value)) {
+    showValidation({ index: 2, validation: true });
+    formValidity.email = true;
+  } else {
+    showValidation({ index: 2, validation: false });
+    formValidity.email = false;
   }
+}
 
-  if (quantity.value.trim() === "") {
-    alert(
-      "Veuillez entrer le nombre de tournois GameOn auxquels vous avez déjà participé."
-    );
-    return false;
+function dateValidation() {
+  if (dateRegExp.test(dateInput.value)) {
+    showValidation({ index: 3, validation: true });
+    formValidity.date = true;
+  } else {
+    showValidation({ index: 3, validation: false });
+    formValidity.date = false;
   }
+}
 
-  if (!checkbox1.checked) {
-    alert("Veuillez accepter les conditions d'utilisation.");
-    return false;
+function quantityValidation() {
+  if (quantityInput.value >= 1 && quantityInput.value <= 100) {
+    showValidation({ index: 4, validation: true });
+    formValidity.numberOfTournament = true;
+  } else {
+    showValidation({ index: 4, validation: false });
+    formValidity.numberOfTournament = false;
   }
+}
 
-  // Vérification de sélection d'un emplacement
-  let locationChecked = false;
-  for (let i = 0; i < location.length; i++) {
-    if (location[i].checked) {
-      locationChecked = true;
-      break;
+function locationsValidation() {
+  const radios = document.getElementsByName("location");
+
+  let i = 0;
+  while (!formValidity.tournamentLocation && i < radios.length) {
+    if (radios[i].checked) {
+      showValidation({ index: 5, validation: true });
+
+      formValidity.tournamentLocation = true;
+      i++;
     }
   }
-  if (!locationChecked) {
-    alert("Veuillez sélectionner un emplacement pour le tournoi.");
-    return false;
+
+  if (!formValidity.tournamentLocation) {
+    showValidation({ index: 5, validation: false });
+
+    alert("Veuillez sélectionner un lieu pour le tournoi !");
+  } else {
+    return formValidity.tournamentLocation;
+  }
+}
+
+locationsValidation();
+
+function checkBoxValidation() {
+  const checkBox = document.querySelector("#checkbox1");
+
+  if (checkBox.checked) {
+    showValidation({ index: 6, validation: true });
+
+    formValidity.userCondition = true;
+  } else {
+    showValidation({ index: 6, validation: false });
+
+    formValidity.userCondition = false;
+    alert("Veuillez valider les conditions d'utilisations !");
   }
 
-  // Tous les champs sont valides, le formulaire peut être envoyé
-  alert("Bravo, votre inscription est terminée !");
-  return true;
+  return formValidity.userCondition;
+}
+
+checkBoxValidation();
+
+// const button = document.querySelector('.btn-submit');
+
+validationForm.addEventListener("click", handleForm);
+
+function handleForm(event) {
+  event.preventDefault();
+
+  const keys = Object.keys(formValidity);
+  const failedInputs = keys.filter((key) => !formValidity[key]);
+  console.log(failedInputs);
+
+  if (failedInputs.length) {
+    failedInputs.forEach((input) => {
+      const index = keys.indexOf(input);
+      showValidation({ index, validation: false });
+    });
+  } else {
+    alert("Données envoyées avec succès !");
+  }
 }

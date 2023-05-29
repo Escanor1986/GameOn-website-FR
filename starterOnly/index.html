@@ -9,6 +9,10 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
+    <script
+      src="https://kit.fontawesome.com/fdbd35fc2c.js"
+      crossorigin="anonymous"
+    ></script>
     <link
       href="https://fonts.googleapis.com/css?family=DM+Sans"
       rel="stylesheet"
@@ -54,7 +58,6 @@
         <div class="content">
           <span class="close"></span>
           <div class="modal-body">
-            <!-- à vérifier -->
             <form
               name="reserve"
               action="index.html"
@@ -62,71 +65,148 @@
               class="validation_form"
               onsubmit="return validate();"
             >
-              <!-- à vérifier -->
+              <!-- Ajout de la div class="icon-input-container", 
+                de l'img class="icone-verif" et de la span class="error-msg" -->
+
               <div class="formData">
                 <label for="first">Prénom</label><br />
-                <input
-                  placeholder="Votre prénom"
-                  class="text-control"
-                  type="text"
-                  id="first"
-                  data-component="inputData"
-                  name="first"
-                  minlength="2"
-                /><br />
+                <div class="icon-input-container">
+                  <input
+                    placeholder="Votre prénom"
+                    class="text-control"
+                    type="text"
+                    id="first"
+                    data-component="inputData"
+                    name="first"
+                    minlength="2"
+                  />
+                  <img
+                    src="icons/check.svg"
+                    alt="icone de validation"
+                    class="icone-verif"
+                  />
+                </div>
+                <span class="error-msg"
+                  >Choisissez un prénom contenant au moins 2 caractères.</span
+                >
+                <br />
               </div>
+
+              <!-- Ajout de la div class="icon-input-container", 
+                de l'img class="icone-verif" et de la span class="error-msg" -->
+
               <div class="formData">
                 <label for="last">Nom</label><br />
-                <input
-                  placeholder="Votre nom"
-                  class="text-control"
-                  data-component="inputData"
-                  type="text"
-                  id="last"
-                  name="last"
-                /><br />
+                <div class="icon-input-container">
+                  <input
+                    placeholder="Votre nom"
+                    class="text-control"
+                    data-component="inputData"
+                    type="text"
+                    id="last"
+                    name="last"
+                    minlength="2"
+                  />
+                  <img
+                    src="icons/check.png"
+                    alt="icone de validation"
+                    class="icone-verif"
+                  />
+                </div>
+                <span class="error-msg"
+                  >Choisissez un nom contenant au moins 2 caractères.</span
+                >
+                <br />
               </div>
+
+              <!-- Ajout de la div class="icon-input-container", 
+                de l'img class="icone-verif" et de la span class="error-msg" -->
+
               <div class="formData">
                 <label for="email">E-mail</label><br />
-                <input
-                  placeholder="votre E-mail"
-                  class="text-control"
-                  data-component="inputData"
-                  type="email"
-                  id="email"
-                  name="email"
-                /><br />
+                <div class="icon-input-container">
+                  <input
+                    placeholder="votre email"
+                    class="text-control"
+                    data-component="inputData"
+                    type="email"
+                    id="email"
+                    name="email"
+                  />
+                  <img
+                    src="icons/check.png"
+                    alt="icone de validation"
+                    class="icone-verif"
+                  />
+                </div>
+                <span class="error-msg">Veuillez rentrer un email valide.</span>
+                <br />
               </div>
+
+              <!-- Ajout de la div class="icon-input-container", 
+                de l'img class="icone-verif" et de la span class="error-msg" -->
+
               <div class="formData">
                 <label for="birthdate">Date de naissance</label><br />
-                <input
-                  placeholder="Votre date de naissance"
-                  class="text-control"
-                  data-component="inputData"
-                  type="date"
-                  id="birthdate"
-                  name="birthdate"
-                /><br />
+                <div class="icon-input-container">
+                  <input
+                    placeholder="Format 'aaaa-mm-jj'"
+                    class="text-control"
+                    data-component="inputData"
+                    type="text"
+                    id="birthdate"
+                    name="birthdate"
+                  /><img
+                    src="icons/check.png"
+                    alt="icone de validation"
+                    class="icone-verif"
+                  />
+                </div>
+                <span class="error-msg"
+                  >Choisissez une date de naissance valide, exemple :
+                  '1990-05-22'</span
+                >
+                <br />
               </div>
+
+              <!-- Ajout de la div class="icon-input-container", 
+                de l'img class="icone-verif" et de la span class="error-msg" -->
+
               <div class="formData">
                 <label for="quantity"
                   >À combien de tournois GameOn avez-vous déjà participé
                   ?</label
                 ><br />
-                <input
-                  placeholder="Choisissez un nombre"
-                  type="number"
-                  class="text-control"
-                  data-component="inputData"
-                  id="quantity"
-                  name="quantity"
-                  min="0"
-                  max="99"
-                />
+                <div class="icon-input-container">
+                  <input
+                    placeholder="Choisissez un nombre"
+                    type="number"
+                    class="text-control"
+                    data-component="inputData"
+                    id="quantity"
+                    name="quantity"
+                    min="0"
+                    max="99"
+                  /><img
+                    src="icons/check.png"
+                    alt="icone de validation"
+                    class="icone-verif"
+                  />
+                </div>
+                <span class="error-msg"
+                  >Choisissez un nombre de tournoi valide.</span
+                >
+                <br />
               </div>
+
               <p class="text-label">
                 A quel tournoi souhaitez-vous participer cette année ?
               </p>
+              <img
+                src="icons/check.png"
+                alt="icone de validation"
+                class="icone-verif"
+              />
               <div class="formData">
                 <input
                   class="checkbox-input"
@@ -194,6 +274,9 @@
                   <span class="checkbox-icon"></span>
                   Portland</label
                 >
+                <span class="error-msg"
+                  >Veuillez sélectionner une ville pour le tournoi</span
+                >
               </div>
 
               <div class="formData">
@@ -205,8 +288,16 @@
                 />
                 <label class="checkbox2-label" for="checkbox1" required>
                   <span class="checkbox-icon"></span>
-                  J'ai lu et accepté les conditions d'utilisation.
-                </label>
+                  J'ai lu et accepté les conditions d'utilisation. </label
+                ><img
+                  src="icons/check.png"
+                  alt="icone de validation"
+                  class="icone-verif"
+                />
+                <span class="error-msg"
+                  >Veuillez accepter les conditions d'utilisation en cochant la
+                  case</span
+                >
                 <br />
                 <input class="checkbox-input" type="checkbox" id="checkbox2" />
                 <label class="checkbox2-label" for="checkbox2">

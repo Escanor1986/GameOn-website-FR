@@ -204,12 +204,51 @@ input {
   border: 0.8px solid #ccc;
   outline: none;
 }
+
+/* Vérification entrées input, message d'erreur et icône de vérification */
+
+.formData {
+  position: relative;
+}
+
+.icon-input-container {
+  display: flex;
+  position: relative;
+}
+
+.icone-verif {
+  position: absolute;
+  top: 5px;
+  left: 350px;
+  width: 38px;
+  border-radius: 50px 50px 50px 50px;
+  padding: 0;
+  display: none;
+}
+
+.error-msg {
+  margin: 7px 0 0 0;
+  font-size: 12px;
+  color: #ff4e60;
+  font-weight: 500;
+  display: none;
+}
+
+input::placeholder {
+  font-size: 14px;
+}
+
+input:focus {
+  border: 3px solid #279e7a;
+}
+/* Vérification entrées input, message d'erreur et icône de vérification */
+
 .text-control {
   margin: 0;
   padding: 8px;
   width: 100%;
   border-radius: 8px;
-  font-size: 20px;
+  font-size: 14px;
   height: 48px;
 }
 .formData[data-error]::after {
@@ -230,6 +269,14 @@ input {
 .formData[data-error-visible="true"] .text-control {
   border: 2px solid #e54858;
 }
+.input-error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+}
+
 /* 
 input[data-error]::after {
     content: attr(data-error);
