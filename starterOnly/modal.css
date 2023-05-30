@@ -218,12 +218,24 @@ input {
 
 .icone-verif {
   position: absolute;
-  top: 5px;
-  left: 350px;
-  width: 38px;
+  top: 9px;
+  left: 385px;
+  width: 30px;
   border-radius: 50px 50px 50px 50px;
   padding: 0;
   display: none;
+}
+
+.checkbox-verif {
+  position: absolute;
+  top: 5px;
+  left: 285px;
+}
+
+.radio-verif {
+  position: absolute;
+  top: 670px;
+  left: 458px;
 }
 
 .error-msg {
