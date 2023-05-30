@@ -384,6 +384,52 @@ input[data-error]::after {
   cursor: pointer;
   border: 0;
 }
+
+.exit-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 5% auto;
+  width: 100%;
+  max-width: 500px;
+  height: 60vh;
+  animation-name: modalopen;
+  animation-duration: var(--modal-duration);
+  background: #232323;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  color: #fff;
+  padding-top: 10px;
+}
+
+.close-text {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 142.6%;
+
+  /* or 51px */
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: #ffffff;
+}
+
+.exit-btn {
+  background: #fe142f;
+  display: block;
+  margin: 0 auto;
+  border-radius: 7px;
+  font-size: 1rem;
+  padding: 12px 82px;
+  color: #fff;
+  cursor: pointer;
+  border: 0;
+}
+
 /* custom select styles */
 .custom-select {
   position: relative;

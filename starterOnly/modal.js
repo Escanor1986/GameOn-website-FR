@@ -1,6 +1,3 @@
-/* eslint-disable comma-dangle */
-/* eslint-disable space-before-function-paren */
-/* eslint-disable semi */
 function editNav() {
   const x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -13,31 +10,10 @@ function editNav() {
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
+const sectionExitContent = document.querySelector(".section-exit-content");
+const modalContent = document.querySelector(".content");
 
-// launch modal event
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
-
-// launch modal form
-function launchModal() {
-  console.log("modal opened !");
-  modalbg.style.display = "block";
-}
-
-// Close DOM element
-const modalClose = document.querySelector(".close");
-// close modal event
-const closingModal = () => {
-  modalClose.addEventListener("click", (event) => {
-    event.preventDefault();
-    // close modal form
-    console.log("modal closed !");
-    modalbg.style.display = "none";
-  });
-};
-
-closingModal();
-
-// Gestion du formulaire
+// constante "interrupteur" pour la validation du formulaire
 const formValidity = {
   firstName: false,
   lastName: false,
@@ -65,6 +41,44 @@ const emailInput = form.querySelector("div.formData:nth-child(3) input");
 const dateInput = form.querySelector("div.formData:nth-child(4) input");
 const quantityInput = form.querySelector("div.formData:nth-child(5) input");
 
+// fonction de reset pour le formulaire
+function resetForm() {
+  const form = document.querySelector("form");
+  form.reset();
+  validationIcons.forEach((element) => {
+    element.removeAttribute("style");
+  });
+  validationTexts.forEach((element) => {
+    element.removeAttribute("style");
+  });
+}
+
+// launch modal event
+modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+
+// launch modal form
+function launchModal() {
+  console.log("modal opened !");
+  modalbg.style.display = "block";
+  resetForm();
+}
+
+// Close DOM element
+const modalClose = document.querySelector(".close");
+// close modal event
+const closingModal = () => {
+  modalClose.addEventListener("click", (event) => {
+    event.preventDefault();
+    // close modal form
+    console.log("modal closed !");
+    modalbg.style.display = "none";
+    resetForm();
+  });
+};
+
+closingModal();
+
+// Gestion de sélection des 5 premiers input dans le DOM
 const formInputs = [
   {
     selector: "div.formData:nth-child(1) input",
@@ -82,6 +96,14 @@ const formInputs = [
   },
 ];
 
+// Gestion de l'écoute des évènements sur les inputs de formInputs
+// destructuring sur formInputs pour récupérer selector et validation
+formInputs.forEach(({ selector, validation }) => {
+  const input = form.querySelector(selector);
+  input.addEventListener("blur", validation);
+  input.addEventListener("input", validation);
+});
+
 // showValidation permet d'effectuer un "destructuring" pour passer en paramètre
 // la fonction afin d'éviter de répéter de plus grosse partie de code
 function showValidation({ index, validation }) {
@@ -98,12 +120,7 @@ function showValidation({ index, validation }) {
   }
 }
 
-formInputs.forEach(({ selector, validation }) => {
-  const input = form.querySelector(selector);
-  input.addEventListener("blur", validation);
-  input.addEventListener("input", validation);
-});
-
+// Gestion des inputs séparément avec showValidation(visuel) et formValidity(interrupteur)
 function firstNameValidation() {
   if (
     firstNameInput.value.length >= 2 &&
@@ -117,6 +134,7 @@ function firstNameValidation() {
   }
 }
 
+// Gestion des inputs séparément avec showValidation(visuel) et formValidity(interrupteur)
 function lastNameValidation() {
   if (lastNameInput.value.length >= 2 && charRegExp.test(lastNameInput.value)) {
     showValidation({ index: 1, validation: true });
@@ -127,6 +145,7 @@ function lastNameValidation() {
   }
 }
 
+// Gestion des inputs séparément avec showValidation(visuel) et formValidity(interrupteur)
 function emailValidation() {
   if (emailRegExp.test(emailInput.value)) {
     showValidation({ index: 2, validation: true });
@@ -137,6 +156,7 @@ function emailValidation() {
   }
 }
 
+// Gestion des inputs séparément avec showValidation(visuel) et formValidity(interrupteur)
 function dateValidation() {
   if (dateRegExp.test(dateInput.value)) {
     showValidation({ index: 3, validation: true });
@@ -147,6 +167,7 @@ function dateValidation() {
   }
 }
 
+// Gestion des inputs séparément avec showValidation(visuel) et formValidity(interrupteur)
 function quantityValidation() {
   if (quantityInput.value >= 1 && quantityInput.value <= 100) {
     showValidation({ index: 4, validation: true });
@@ -157,6 +178,7 @@ function quantityValidation() {
   }
 }
 
+// Gestion des inputs séparément avec showValidation(visuel) et formValidity(interrupteur)
 function locationsValidation() {
   const radios = document.getElementsByName("location");
 
@@ -164,33 +186,28 @@ function locationsValidation() {
   while (!formValidity.tournamentLocation && i < radios.length) {
     if (radios[i].checked) {
       showValidation({ index: 5, validation: true });
-
       formValidity.tournamentLocation = true;
-      i++;
     }
+    i++; // Ajout de l'incrémentation de la variable i
   }
 
   if (!formValidity.tournamentLocation) {
     showValidation({ index: 5, validation: false });
-
     alert("Veuillez sélectionner un lieu pour le tournoi !");
   } else {
     return formValidity.tournamentLocation;
   }
 }
 
-locationsValidation();
-
+// Gestion des inputs séparément avec showValidation(visuel) et formValidity(interrupteur)
 function checkBoxValidation() {
   const checkBox = document.querySelector("#checkbox1");
 
   if (checkBox.checked) {
     showValidation({ index: 6, validation: true });
-
     formValidity.userCondition = true;
   } else {
     showValidation({ index: 6, validation: false });
-
     formValidity.userCondition = false;
     alert("Veuillez valider les conditions d'utilisations !");
   }
@@ -198,25 +215,80 @@ function checkBoxValidation() {
   return formValidity.userCondition;
 }
 
-checkBoxValidation();
+// Gestion du modal post validation
+function endForm() {
+  console.log("Données envoyées avec succès !");
+  console.log("form closed !");
 
-// const button = document.querySelector('.btn-submit');
+  //fermeture du formulaire
+  modalContent.style.display = "none";
+
+  sectionExitContent.innerHTML = "";
+
+  const exitDiv = document.createElement("div");
+
+  // création de la modal post validation
+  exitDiv.innerHTML = `
+          <div class="exit-content">
+            <span class="close"></span>
+            <p class="close-text">Merci pour <br />Votre inscription</p>
+            <input class="exit-btn" type="submit" class="button" value="Fermer" />
+          </div>
+          `;
+  exitDiv.className = "exit-content";
+  sectionExitContent.append(exitDiv);
+
+  const exitBtn = document.querySelector(".exit-btn");
+
+  // Gestion de la fermeture de la modal post validation
+  const closingForm = () => {
+    exitBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      console.log("modal closed !");
+
+      modalbg.style.display = "none";
+      sectionExitContent.style.display = "none";
+      modalContent.style.display = "block";
+
+      Object.keys(formValidity).forEach((key) => {
+        formValidity[key] = true;
+      });
+
+      // On appel resetForm lors de la fermeture pour réiinitialiser le formulaire
+      resetForm();
+    });
+  };
+  // Et enfin on appel closingForm() DANS la modal post validation
+  // Pour pouvoir utiliser le nouveau bouton de fermeture
+  closingForm();
+}
 
 validationForm.addEventListener("click", handleForm);
 
+// Gestion de validation du formulaire
 function handleForm(event) {
   event.preventDefault();
 
+  // On appel locationsValidation && checkBoxValidation uniquement lors du click
+  // pour vérifier si l'utilisateur à valider les 2 derniers inputs
+  locationsValidation();
+  checkBoxValidation();
+
+  // On itère sur le contenu de tous les inputs
   const keys = Object.keys(formValidity);
   const failedInputs = keys.filter((key) => !formValidity[key]);
   console.log(failedInputs);
 
+  // Si un ou plusieurs input(s) ont de la "longueur"
   if (failedInputs.length) {
     failedInputs.forEach((input) => {
       const index = keys.indexOf(input);
+      // On set showValidation à false aux indexs correspondants
       showValidation({ index, validation: false });
     });
   } else {
-    alert("Données envoyées avec succès !");
+    // si tout est valide, on appel endForm() pour générer la modal post validation
+    endForm();
   }
 }
