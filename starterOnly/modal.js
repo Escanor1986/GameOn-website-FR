@@ -7,12 +7,6 @@ function editNav() {
   }
 }
 
-// DOM Elements
-const modalbg = document.querySelector(".bground");
-const modalBtn = document.querySelectorAll(".modal-btn");
-const sectionExitContent = document.querySelector(".section-exit-content");
-const modalContent = document.querySelector(".content");
-
 // constante "interrupteur" pour la validation du formulaire
 const formValidity = {
   firstName: false,
@@ -24,9 +18,16 @@ const formValidity = {
   userCondition: false,
 };
 
+// Expressions régulières pour la vérification des inputs concernés
 const charRegExp = /^[a-zA-Z ,.'-]+$/;
 const emailRegExp = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
 const dateRegExp = /^(\d{4})-(\d{2})-(\d{2})$/;
+
+// DOM Elements
+const modalbg = document.querySelector(".bground");
+const modalBtn = document.querySelectorAll(".modal-btn");
+const sectionExitContent = document.querySelector(".section-exit-content");
+const modalContent = document.querySelector(".content");
 
 const form = document.querySelector("form[name='reserve']");
 const validationForm = document.querySelector(".btn-submit");
@@ -227,7 +228,7 @@ function endForm() {
 
   const exitDiv = document.createElement("div");
 
-  // création de la modal post validation
+  // création de la modal post validation dans le DOM
   exitDiv.innerHTML = `
           <div class="exit-content">
             <span class="close"></span>
@@ -241,7 +242,7 @@ function endForm() {
   const exitBtn = document.querySelector(".exit-btn");
 
   // Gestion de la fermeture de la modal post validation
-  const closingForm = () => {
+  const closingPostValidationModal = () => {
     exitBtn.addEventListener("click", (event) => {
       event.preventDefault();
 
@@ -259,9 +260,9 @@ function endForm() {
       resetForm();
     });
   };
-  // Et enfin on appel closingForm() DANS la modal post validation
+  // Et enfin on appel closingPostValidationModal() DANS la modal post validation
   // Pour pouvoir utiliser le nouveau bouton de fermeture
-  closingForm();
+  closingPostValidationModal();
 }
 
 validationForm.addEventListener("click", handleForm);
