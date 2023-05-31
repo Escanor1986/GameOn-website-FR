@@ -24,6 +24,7 @@ const emailRegExp = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
 const dateRegExp = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 // DOM Elements
+const modalClose = document.querySelector(".close");
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const sectionExitContent = document.querySelector(".section-exit-content");
@@ -64,8 +65,6 @@ function launchModal() {
   resetForm();
 }
 
-// Close DOM element
-const modalClose = document.querySelector(".close");
 // close modal event
 const closingModal = () => {
   modalClose.addEventListener("click", (event) => {
@@ -223,6 +222,7 @@ function endForm() {
 
   //fermeture du formulaire
   modalContent.style.display = "none";
+  sectionExitContent.style.display = "block";
 
   sectionExitContent.innerHTML = "";
 
@@ -231,38 +231,41 @@ function endForm() {
   // création de la modal post validation dans le DOM
   exitDiv.innerHTML = `
           <div class="exit-content">
+            <div class="exit-content-close-span">
             <span class="close"></span>
+            </div>
+            <div class="exit-content-input-container">
             <p class="close-text">Merci pour <br />Votre inscription</p>
             <input class="exit-btn" type="submit" class="button" value="Fermer" />
+            </div>
           </div>
           `;
   exitDiv.className = "exit-content";
   sectionExitContent.append(exitDiv);
 
   const exitBtn = document.querySelector(".exit-btn");
+  const exitSpan = document.querySelector(".close");
 
-  // Gestion de la fermeture de la modal post validation
-  const closingPostValidationModal = () => {
-    exitBtn.addEventListener("click", (event) => {
-      event.preventDefault();
+  const closingPostValidationModal = (event) => {
+    event.preventDefault();
 
-      console.log("modal closed !");
+    console.log("modal closed !");
 
-      modalbg.style.display = "none";
-      sectionExitContent.style.display = "none";
-      modalContent.style.display = "block";
+    modalbg.style.display = "none";
+    sectionExitContent.style.display = "none";
+    modalContent.style.display = "block";
 
-      Object.keys(formValidity).forEach((key) => {
-        formValidity[key] = true;
-      });
-
-      // On appel resetForm lors de la fermeture pour réiinitialiser le formulaire
-      resetForm();
+    Object.keys(formValidity).forEach((key) => {
+      formValidity[key] = true;
     });
+
+    // On appelle resetForm lors de la fermeture pour réinitialiser le formulaire
+    resetForm();
   };
-  // Et enfin on appel closingPostValidationModal() DANS la modal post validation
-  // Pour pouvoir utiliser le nouveau bouton de fermeture
-  closingPostValidationModal();
+
+  // On ajoute le même gestionnaire d'événement aux deux éléments
+  exitBtn.addEventListener("click", closingPostValidationModal);
+  exitSpan.addEventListener("click", closingPostValidationModal);
 }
 
 validationForm.addEventListener("click", handleForm);

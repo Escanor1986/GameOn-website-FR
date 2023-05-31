@@ -355,6 +355,7 @@ input[data-error]::after {
   top: 19%;
 }
 .close {
+  color: white;
   position: absolute;
   right: 15px;
   top: 15px;
@@ -394,12 +395,12 @@ input[data-error]::after {
 
 .exit-content {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-direction: row;
+  justify-content: center;
   margin: 5% auto;
   width: 100%;
   max-width: 500px;
-  height: 60vh;
+  height: 80vh;
   animation-name: modalopen;
   animation-duration: var(--modal-duration);
   background: #232323;
@@ -410,7 +411,14 @@ input[data-error]::after {
   padding-top: 10px;
 }
 
+.exit-content-input-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .close-text {
+  margin: 150px 0 0 0;
   font-family: "DM Sans";
   font-style: normal;
   font-weight: 400;
@@ -428,7 +436,7 @@ input[data-error]::after {
 .exit-btn {
   background: #fe142f;
   display: block;
-  margin: 0 auto;
+  margin: 100px auto;
   border-radius: 7px;
   font-size: 1rem;
   padding: 12px 82px;
