@@ -19,7 +19,7 @@ const formValidity = {
 };
 
 // Expressions régulières pour la vérification des inputs concernés
-const charRegExp = /^[a-zA-Z ,.'-]+$/;
+const charRegExp = /^[a-zA-ZÀ-ÿ ,.'-]+$/u;
 const emailRegExp = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
 const dateRegExp = /^(\d{4})-(\d{2})-(\d{2})$/;
 
