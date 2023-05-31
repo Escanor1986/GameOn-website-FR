@@ -211,16 +211,9 @@ input {
   position: relative;
 }
 
-.icon-input-container {
-  display: flex;
-  position: relative;
-}
-
 .icone-verif {
-  position: absolute;
-  top: 9px;
-  left: 385px;
   width: 30px;
+  margin: 0 0 0 10px;
   border-radius: 50px 50px 50px 50px;
   padding: 0;
   display: none;
@@ -232,10 +225,12 @@ input {
   left: 285px;
 }
 
-.radio-verif {
-  position: absolute;
-  top: 670px;
-  left: 458px;
+.check-flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
 }
 
 .error-msg {
@@ -298,7 +293,7 @@ input[data-error]::after {
 .checkbox-label,
 .checkbox2-label {
   position: relative;
-  margin-left: 36px;
+  margin: 12px 0 0 36px;
   font-size: 12px;
   font-weight: normal;
 }
@@ -510,6 +505,7 @@ input[data-error]::after {
 }
 /* custom select end */
 .text-label {
+  margin: 17px 3px 0 0;
   font-weight: normal;
   font-size: 16px;
 }
