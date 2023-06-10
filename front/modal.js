@@ -271,7 +271,7 @@ function endForm() {
 validationForm.addEventListener("click", handleForm);
 
 // Gestion de validation du formulaire
-function handleForm(event) {
+async function handleForm(event) {
   event.preventDefault();
 
   // On appel locationsValidation && checkBoxValidation uniquement lors du click
@@ -294,5 +294,47 @@ function handleForm(event) {
   } else {
     // si tout est valide, on appel endForm() pour générer la modal post validation
     endForm();
+    // Récupération du formulaire
+    const form = document.querySelector("form");
+
+    // Écouteur d'événement pour la soumission du formulaire
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      // Récupération des valeurs des champs du formulaire
+      const firstName = document.getElementById("first").value;
+      const lastName = document.getElementById("last").value;
+      const email = document.getElementById("email").value;
+      const birthdate = document.getElementById("birthdate").value;
+      const quantity = document.getElementById("quantity").value;
+      const location = document.querySelector(
+        'input[name="location"]:checked'
+      ).value;
+
+      // Envoi des données au serveur
+      fetch("/submit-form", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          birthdate,
+          quantity,
+          location,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data); // Affichage de la réponse du serveur
+          // Éventuellement, vous pouvez afficher un message de confirmation ou rediriger l'utilisateur ici
+        })
+        .catch((error) => {
+          console.error("Erreur :", error);
+          // Gérer l'erreur en conséquence
+        });
+    });
   }
 }

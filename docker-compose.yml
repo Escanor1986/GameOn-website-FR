@@ -1,0 +1,20 @@
+version: '3'
+services:
+  api:
+    build: ./api
+    tty: true
+    stdin_open: true
+    ports:
+      - 5000:5000
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/myapp
+    depends_on:
+      - mongodb
+    networks:
+      - mern-app-network
+
+networks:
+  mern-app-network:
+
+volumes:
+  mongo-data:
