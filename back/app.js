@@ -1,12 +1,11 @@
 require("dotenv").config();
-import express, { json } from "express";
-import { createTransport } from "nodemailer";
+const express = require("express");
+const createTransport = require("nodemailer");
 const app = express();
-//on export app vers config
-const _app = app;
-export { _app as app };
+//on exporte app vers config
+module.exports = app;
 
-app.use(json());
+app.use(express.json());
 
 // Endpoint pour la soumission du formulaire
 app.post("/submit-form", (req, res) => {
@@ -56,5 +55,3 @@ app.post("/submit-form", (req, res) => {
       });
     });
 });
-
-export default app;

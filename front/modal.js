@@ -7,6 +7,20 @@ function editNav() {
   }
 }
 
+/* const mainNavbar = document.querySelector(".main-navbar");
+const currentTimeSpan = document.createElement("span");
+currentTimeSpan.className = "current-time";
+mainNavbar.insertBefore(
+  currentTimeSpan,
+  mainNavbar.lastElementChild.previousElementSibling
+);
+function updateCurrentTime() {
+  const currentTime = new Date().toLocaleTimeString();
+  currentTimeSpan.textContent = currentTime;
+}
+updateCurrentTime();
+setInterval(updateCurrentTime, 1000); */
+
 // constante "interrupteur" pour la validation du formulaire
 const formValidity = {
   firstName: false,
@@ -104,8 +118,8 @@ formInputs.forEach(({ selector, validation }) => {
   input.addEventListener("input", validation);
 });
 
-// showValidation permet d'effectuer un "destructuring" pour passer en paramètre
-// la fonction afin d'éviter de répéter de plus grosse partie de code
+// showValidation permet d'effectuer un "destructuring" pour passer cette fonction
+//  en paramètre afin d'éviter de répéter de plus grosse partie de code
 function showValidation({ index, validation }) {
   if (validation) {
     validationIcons[index].style.display = "inline";
@@ -302,14 +316,14 @@ async function handleForm(event) {
       e.preventDefault();
 
       // Récupération des valeurs des champs du formulaire
-      const firstName = document.getElementById("first").value;
-      const lastName = document.getElementById("last").value;
-      const email = document.getElementById("email").value;
-      const birthdate = document.getElementById("birthdate").value;
-      const quantity = document.getElementById("quantity").value;
-      const location = document.querySelector(
-        'input[name="location"]:checked'
-      ).value;
+      const firstName = document.getElementById("first").value.trim();
+      const lastName = document.getElementById("last").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const birthdate = document.getElementById("birthdate").value.trim();
+      const quantity = document.getElementById("quantity").value.trim();
+      const location = document
+        .querySelector('input[name="location"]:checked')
+        .value.trim();
 
       // Envoi des données au serveur
       fetch("/submit-form", {

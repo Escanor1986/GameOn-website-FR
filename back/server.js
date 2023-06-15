@@ -1,6 +1,5 @@
-import { createServer } from "http";
-import app from "./app";
-// const WebSocket = require("ws");
+const http = require("http");
+const app = require("./app");
 
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
@@ -37,7 +36,7 @@ const errorHandler = (error) => {
   }
 };
 
-const server = createServer(app);
+const server = http.createServer(app);
 
 server.on("error", errorHandler);
 
