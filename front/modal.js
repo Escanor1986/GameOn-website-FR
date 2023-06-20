@@ -1,3 +1,13 @@
+window.addEventListener(
+  "load",
+  () => {
+    const loader = document.querySelector(".center-body");
+    loader.style.display = "none";
+    console.info("Page chargée !");
+  },
+  false
+);
+
 function editNav() {
   const x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -7,19 +17,21 @@ function editNav() {
   }
 }
 
-/* const mainNavbar = document.querySelector(".main-navbar");
+// Implémentation de l'heure dans le DOM (selection, creation, implementation)
+const mainNavbar = document.querySelector(".main-navbar");
 const currentTimeSpan = document.createElement("span");
 currentTimeSpan.className = "current-time";
-mainNavbar.insertBefore(
-  currentTimeSpan,
-  mainNavbar.lastElementChild.previousElementSibling
-);
+const lastTopLink = mainNavbar.querySelector(".last-top-link");
+lastTopLink.insertAdjacentElement("afterend", currentTimeSpan);
+
+// Fonction d'update pour l'heure affichée à l'écran
 function updateCurrentTime() {
   const currentTime = new Date().toLocaleTimeString();
   currentTimeSpan.textContent = currentTime;
 }
+
 updateCurrentTime();
-setInterval(updateCurrentTime, 1000); */
+setInterval(updateCurrentTime, 1000);
 
 // constante "interrupteur" pour la validation du formulaire
 const formValidity = {
@@ -70,7 +82,7 @@ function resetForm() {
 }
 
 // launch modal event
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+modalBtn.forEach((btn) => btn.addEventListener("click", launchModal, false));
 
 // launch modal form
 function launchModal() {
@@ -272,9 +284,6 @@ function endForm() {
     Object.keys(formValidity).forEach((key) => {
       formValidity[key] = true;
     });
-
-    // On appelle resetForm lors de la fermeture pour réinitialiser le formulaire
-    resetForm();
   };
 
   // On ajoute le même gestionnaire d'événement aux deux éléments
@@ -282,12 +291,12 @@ function endForm() {
   exitSpan.addEventListener("click", closingPostValidationModal);
 }
 
-validationForm.addEventListener("click", handleForm);
+validationForm.addEventListener("click", handleForm, false);
 
 // Gestion de validation du formulaire
 async function handleForm(event) {
   event.preventDefault();
-
+  console.log("test");
   // On appel locationsValidation && checkBoxValidation uniquement lors du click
   // pour vérifier si l'utilisateur à valider les 2 derniers inputs
   locationsValidation();
@@ -308,47 +317,34 @@ async function handleForm(event) {
   } else {
     // si tout est valide, on appel endForm() pour générer la modal post validation
     endForm();
-    // Récupération du formulaire
-    const form = document.querySelector("form");
 
-    // Écouteur d'événement pour la soumission du formulaire
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      // Récupération des valeurs des champs du formulaire
-      const firstName = document.getElementById("first").value.trim();
-      const lastName = document.getElementById("last").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const birthdate = document.getElementById("birthdate").value.trim();
-      const quantity = document.getElementById("quantity").value.trim();
-      const location = document
-        .querySelector('input[name="location"]:checked')
-        .value.trim();
-
-      // Envoi des données au serveur
-      fetch("/submit-form", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          birthdate,
-          quantity,
-          location,
-        }),
+    console.log("test");
+    // Récupération des valeurs des champs du formulaire
+    const formData = {
+      firstName: firstNameInput.value,
+      lastName: lastNameInput.value,
+      email: emailInput.value,
+      birthdate: dateInput.value,
+      quantity: quantityInput.value,
+      location: document.querySelector('input[name="location"]:checked').value,
+    };
+    console.log(formData);
+    // Envoi des données au serveur
+    fetch("http://localhost:3000/submit-form", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data); // Affichage de la réponse du serveur
+        // Éventuellement, vous pouvez afficher un message de confirmation ou rediriger l'utilisateur ici
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data); // Affichage de la réponse du serveur
-          // Éventuellement, vous pouvez afficher un message de confirmation ou rediriger l'utilisateur ici
-        })
-        .catch((error) => {
-          console.error("Erreur :", error);
-          // Gérer l'erreur en conséquence
-        });
-    });
+      .catch((error) => {
+        console.error("Erreur :", error);
+        // Gérer l'erreur en conséquence
+      });
   }
 }

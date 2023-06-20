@@ -67,9 +67,23 @@ img {
 .topnav .icon {
   display: none;
 }
-.main-navbar > span {
-  margin-top: 20px;
+
+.current-time {
+  float: left;
+  display: block;
   text-align: center;
+  padding: 12px 12px;
+  margin: 5px;
+  text-decoration: none;
+  text-decoration-color: currentcolor;
+  font-size: 20px;
+  font-family: Roboto, sans-serif;
+
+  /* Style flashy fluo */
+  color: #ff005d; /* Couleur rose fluo */
+  background-color: #000000; /* Couleur noire pour l'arrière-plan */
+  border-radius: 10px; /* Coins arrondis */
+  box-shadow: 0 0 10px #ff005d80; /* Ombre fluo */
 }
 
 @media screen and (max-width: 768px) {
