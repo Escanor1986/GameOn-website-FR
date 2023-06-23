@@ -1,0 +1,10 @@
+app:
+    container_name: app
+    restart: always
+    build: .
+    ports:
+      - "3000:3000"
+
+
+
+
