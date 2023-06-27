@@ -1,10 +1,7 @@
 require("dotenv").config();
 const express = require("express");
-const { google } = require("googleapis");
 const nodemailer = require("nodemailer");
-const credentials = require("./Google_ID.json");
 const app = express();
-const OAuth2 = google.auth.OAuth2;
 
 app.use(express.json());
 
@@ -30,51 +27,20 @@ app.post("/submit-form", async (req, res) => {
 
   // Implémentation de la logique SMTP pour l'envoi d'un email de confirmation via Google avec OAuth2
 
-  // Création d'un client OAuth2 avec les identifiants client et secret
-  const authClient = new OAuth2(
-    credentials.client_id,
-    credentials.client_secret,
-    credentials.redirect_uris
-  );
-
-  // Définition de la portée et de la redirection
-  const scopes = [
-    "https://mail.google.com/",
-    "https://www.googleapis.com/auth/gmail.modify",
-    "https://www.googleapis.com/auth/gmail.compose",
-  ];
-
-  // Obtenir un jeton d'accès
-  const url = authClient.generateAuthUrl({
-    access_type: "offline",
-    scope: scopes,
-  });
-
-  // Rediriger l'utilisateur vers l'URL d'autorisation générée
-  res.json({ url });
-
   const getToken = async (code) => {
-    const { tokens } = await authClient.getToken(code);
-    console.log("Jeton d'accès :", tokens.access_token);
-    console.log("Jeton de rafraîchissement :", tokens.refresh_token);
 
-    // Continuer avec l'envoi de l'e-mail en utilisant les jetons d'accès obtenus
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        type: "OAuth2",
-        user: process.env.GMAIL_USER,
-        clientId: credentials.client_id,
-        clientSecret: credentials.client_secret,
-        refreshToken: tokens.refresh_token,
-        accessToken: tokens.access_token,
+        user: 'lionel.zovi@gmail.com',
+        pass: '<<mot de passe généréner par ton MFA>>'
       },
     });
 
     // Options de l'e-mail
     const mailOptions = {
-      from: process.env.GMAIL_USER,
-      to: email,
+      from: 'lionel.zovi@gmail.com', // Sender address
+      to: 'lionel.zovi@gmail.com', // Recipient address
       subject: "Confirmation d'inscription au prochain tournoi de GameOn !",
       html: `
         <h1>Nouvelle inscription au tournoi de la part de :</h1>
@@ -103,10 +69,6 @@ app.post("/submit-form", async (req, res) => {
       });
     }
   };
-
-  // Utilisez le code d'autorisation reçu dans la requête de redirection pour obtenir les jetons
-  const authorizationCode = "CODE_D_AUTORISATION";
-  await getToken(authorizationCode);
 });
 
 module.exports = app;
