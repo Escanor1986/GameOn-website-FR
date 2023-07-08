@@ -1,10 +1,24 @@
 require("dotenv").config();
 const express = require("express");
 const nodemailer = require("nodemailer");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const app = express();
 
 app.use(express.json());
 
+// On utilise Helmet pour sécuriser les en-têtes HTTP
+app.use(helmet());
+
+// On utilise Express Rate Limit pour limiter le nombre de requêtes par IP
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // 5 requêtes max par IP
+});
+
+app.use("/submit-form", limiter);
+
+// Middelware pour autoriser les requêtes cross-origin
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -19,14 +33,37 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post("/submit-form", async (req, res) => {
+// Middelware pour valider les entrées utilisateurs
+function validateInput(req, res, next) {
+  const { firstName, lastName, email, birthdate, quantity, location } =
+    req.body;
+
+  if (
+    (firstName.length < 2 && typeof firstName === "string") ||
+    (lastName.length < 2 && typeof lastName === "string") ||
+    (!email.includes("@") && typeof email === "string") ||
+    !email.includes(".") ||
+    (birthdate.length !== 10 && typeof birthdate === "string") ||
+    isNaN(quantity) ||
+    typeof location === "boolean"
+  ) {
+    return res.status(400).json({
+      success: false,
+      message: "Veuillez vérifier les informations saisies.",
+    });
+  } else {
+    next();
+  }
+}
+
+// Route pour soumettre le formulaire
+app.post("/submit-form", validateInput, async (req, res) => {
   const { firstName, lastName, email, birthdate, quantity, location } =
     req.body;
 
   console.log(req.body);
 
   // Implémentation de la logique SMTP pour l'envoi d'un email de confirmation via Google avec OAuth2
-
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
